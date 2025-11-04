@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/posts")
-//@CrossOrigin(origins = "http://localhost:3000") // React 개발 서버 주소
+//@CrossOrigin(origins = "http://localhost:5173") // React 개발 서버 주소
 public class PostController {
     private final PostService postService;
 
