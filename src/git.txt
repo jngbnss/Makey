@@ -8,7 +8,7 @@ git push -u origin main
 git pull origin main
 
 git add .
-git commit -m "feat : PostService"
+git commit -m "feat : PostResponseDto"
 git push
 
 | 타입            | 의미                    |

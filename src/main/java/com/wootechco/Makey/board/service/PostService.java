@@ -1,8 +1,10 @@
 package com.wootechco.Makey.board.service;
 
 import com.wootechco.Makey.board.domain.Post;
-import com.wootechco.Makey.board.domain.PostRequestDto;
+import com.wootechco.Makey.board.dto.PostRequestDto;
+import com.wootechco.Makey.board.dto.PostResponseDto;
 import com.wootechco.Makey.board.repository.PostRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
