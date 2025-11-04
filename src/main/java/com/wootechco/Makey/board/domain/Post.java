@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
 // 안전장치
 @AllArgsConstructor // 도든 필드를 매개변수로 받는 전체 생성자, 빌더랑 같이쓰면 좋음, 주로 테스트나 빌더 패턴용
 @Builder // 빌더패턴 자동생성
-public class PostV0 {
+public class Post {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // h2에서는 아이덴티티로 진행
