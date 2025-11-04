@@ -1,12 +1,11 @@
 package com.wootechco.Makey.profile.service;
 
-import com.wootechco.Makey.profile.domain.Profile;
 import com.wootechco.Makey.profile.dto.ProfileRequestDto;
 import com.wootechco.Makey.profile.dto.ProfileResponseDto;
+import com.wootechco.Makey.profile.entity.Profile;
 import com.wootechco.Makey.profile.repository.ProfileRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -29,10 +28,7 @@ class ProfileServiceTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        profile = new Profile();
-        profile.setUsername("originalUser");
-        profile.setEmail("original@example.com");
-        profile.setBio("Original bio");
+        profile = new Profile("originalUser", "original@example.com");
     }
 
     @Test
@@ -41,9 +37,8 @@ class ProfileServiceTest {
 
         ProfileResponseDto response = profileService.getProfile(1L);
 
-        assertEquals("originalUser", response.getUsername());
+        assertEquals("originalUser", response.getName());
         assertEquals("original@example.com", response.getEmail());
-        assertEquals("Original bio", response.getBio());
         verify(repository, times(1)).findById(1L);
     }
 
@@ -53,37 +48,35 @@ class ProfileServiceTest {
 
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
                 () -> profileService.getProfile(1L));
-        assertEquals("Profile not found", exception.getMessage());
+        assertEquals("프로필이 존재하지 않습니다. id=1", exception.getMessage());
         verify(repository, times(1)).findById(1L);
     }
 
     @Test
     void updateProfile_ShouldUpdateAndReturnProfileResponseDto_WhenProfileExists() {
         when(repository.findById(1L)).thenReturn(Optional.of(profile));
-        ProfileRequestDto requestDto = new ProfileRequestDto("newUser", "new@example.com", "New bio");
+        ProfileRequestDto requestDto = new ProfileRequestDto("newUser", "new@example.com");
 
         ProfileResponseDto response = profileService.updateProfile(1L, requestDto);
 
-        assertEquals("newUser", response.getUsername());
+        assertEquals("newUser", response.getName());
         assertEquals("new@example.com", response.getEmail());
-        assertEquals("New bio", response.getBio());
 
         // Repository findById 호출 검증
         verify(repository, times(1)).findById(1L);
         // 프로필 객체가 실제로 업데이트 되었는지도 검증
-        assertEquals("newUser", profile.getUsername());
+        assertEquals("newUser", profile.getName());
         assertEquals("new@example.com", profile.getEmail());
-        assertEquals("New bio", profile.getBio());
     }
 
     @Test
     void updateProfile_ShouldThrowException_WhenProfileDoesNotExist() {
         when(repository.findById(1L)).thenReturn(Optional.empty());
-        ProfileRequestDto requestDto = new ProfileRequestDto("newUser", "new@example.com", "New bio");
+        ProfileRequestDto requestDto = new ProfileRequestDto("newUser", "new@example.com");
 
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
                 () -> profileService.updateProfile(1L, requestDto));
-        assertEquals("Profile not found", exception.getMessage());
+        assertEquals("프로필이 존재하지 않습니다. id=1", exception.getMessage());
         verify(repository, times(1)).findById(1L);
     }
 }

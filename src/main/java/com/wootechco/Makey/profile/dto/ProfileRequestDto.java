@@ -1,20 +1,16 @@
 package com.wootechco.Makey.profile.dto;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Getter
+@NoArgsConstructor
 public class ProfileRequestDto {
-    private String username;
+    private String name;
     private String email;
-    private String bio;
 
-    public ProfileRequestDto() {}
-
-    public ProfileRequestDto(String username, String email, String bio) {
-        this.username = username;
+    public ProfileRequestDto(String name, String email) {
+        this.name = name;
         this.email = email;
-        this.bio = bio;
     }
-
-    public String getUsername() { return username; }
-    public String getEmail() { return email; }
-    public String getBio() { return bio; }
 }
-
