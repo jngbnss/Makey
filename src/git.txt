@@ -11,7 +11,7 @@ git pull origin main
 
 
 git add .
-git commit -m "docs: 게시판 기능 요구 사항 명세서 "
+git commit -m "feat: 게시판 도메인 "
 git push
 
 한턴쉬고
