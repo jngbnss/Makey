@@ -8,7 +8,7 @@ git push -u origin main
 git pull origin main
 
 git add .
-git commit -m "feat : 테스트용 초기 데이터 작성"
+git commit -m "test : PostServiceTest"
 git push
 
 | 타입            | 의미                    |
