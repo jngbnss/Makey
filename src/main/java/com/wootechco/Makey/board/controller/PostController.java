@@ -5,6 +5,7 @@ import com.wootechco.Makey.board.dto.PostResponseDto;
 import com.wootechco.Makey.board.service.PostService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/posts")
+//@CrossOrigin(origins = "http://localhost:3000") // React 개발 서버 주소
 public class PostController {
     private final PostService postService;
 
