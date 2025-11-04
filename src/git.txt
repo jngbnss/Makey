@@ -7,19 +7,9 @@ git push -u origin main
 
 git pull origin main
 
-//불변객체에 패스워드 만들어볼까
-
-
 git add .
-git commit -m "feat: 게시판 도메인 "
+git commit -m "feat: PostRepository "
 git push
-
-한턴쉬고
-불변객체하자
-
-feat: courseRegistrain Main
-feat: Object 배열, toString()
-docs:숫자야구 요구사항 명세서
 
 | 타입            | 의미                    |
 | ------------- | --------------------- |
