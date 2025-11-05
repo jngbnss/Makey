@@ -1,28 +1,39 @@
-// src/pages/Main.jsx
 import { useNavigate } from "react-router-dom";
-import Card from "../components/Card";
+import "./Main.css";
 
 export default function Main() {
   const navigate = useNavigate();
 
-  const cards = [
-    { id: 1, title: "프로필", route: "/profile" },
-    { id: 2, title: "게시판", route: "/board" },
-    { id: 3, title: "3", route: "#" },
+  const items = [
+    "프로필",
+    "게시판",
+    "노인",
+    "쇼핑",
+    "생활/가정",
+    "경제/재테크",
+    "건강/의료",
+    "행정/법률",
+    "쇼핑",
   ];
 
+  const handleClick = (item) => {
+    if (item === "게시판") {
+      navigate("/posts"); // 게시판 클릭 시 게시판 목록 페이지로 이동
+    }
+    if (item === "노인") {
+      navigate("/elderly");
+    }
+  };
+
   return (
-    <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "20px", padding: "20px" }}>
-      {cards.map(card => (
-        <Card
-          key={card.id}
-          item={card}
-          onClick={() => {
-            console.log("clicked", card.route);
-            if (card.route !== "#") navigate(card.route);
-          }}
-        />
-      ))}
+    <div className="container">
+      <div className="grid-box">
+        {items.map((item, idx) => (
+          <div key={idx} className="card" onClick={() => handleClick(item)}>
+            {item}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

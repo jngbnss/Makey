@@ -1,0 +1,117 @@
+/* 게시글 목록 컨테이너 */
+.post-list-container {
+  padding: 20px;
+  position: relative;
+}
+
+/* 버튼을 왼쪽, 오른쪽 위에 배치 */
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px 20px;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  right: 20px;
+  z-index: 10;
+}
+
+/* 뒤로가기 버튼 */
+.back-button {
+  padding: 10px 25px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+  border-radius: 25px;
+  background-color: #ff6f61;
+  color: white;
+  transition: all 0.3s ease-in-out;
+}
+
+.back-button:hover {
+  background-color: #ff4a3e;
+  transform: translateY(-2px);
+}
+
+/* 등록하기 버튼 */
+.create-button {
+  padding: 10px 25px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+  border-radius: 25px;
+  background-color: #4CAF50;
+  color: white;
+  transition: all 0.3s ease-in-out;
+}
+
+.create-button:hover {
+  background-color: #45a049;
+  transform: translateY(-2px);
+}
+
+/* 게시글 목록을 그리드로 배치 */
+.post-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3개의 열로 나누기 */
+  gap: 20px;  /* 카드 사이의 간격 */
+  margin-top: 20px;
+}
+
+/* 각 게시글 카드 스타일 */
+.post-card {
+  background: #fff;
+  border: 2px solid #d3d3d3;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
+}
+
+/* 카드에 색상 추가 */
+.post-card:nth-child(odd) {
+  background-color: #f0f8ff;  /* 파스텔 블루 */
+}
+
+.post-card:nth-child(even) {
+  background-color: #f8f0ff;  /* 파스텔 핑크 */
+}
+
+.post-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* 카드 내용 스타일 */
+.post-card h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.post-card p {
+  font-size: 14px;
+  color: #555;
+}
+
+.post-card strong {
+  font-weight: bold;
+  color: #333;
+}
+
+/* 작은 화면에서 카드 수를 2개로 조정 */
+@media (max-width: 768px) {
+  .post-list {
+    grid-template-columns: repeat(2, 1fr); /* 2개의 열로 변경 */
+  }
+}
+
+/* 매우 작은 화면에서 카드 수를 1개로 조정 */
+@media (max-width: 480px) {
+  .post-list {
+    grid-template-columns: 1fr; /* 1개의 열로 변경 */
+  }
+}
