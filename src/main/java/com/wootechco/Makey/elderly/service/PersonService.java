@@ -1,94 +1,89 @@
 package com.wootechco.Makey.elderly.service;
 
+import com.wootechco.Makey.elderly.domain.LocationHistory;
 import com.wootechco.Makey.elderly.domain.Person;
+import com.wootechco.Makey.elderly.dto.LocationRequestDto;
+import com.wootechco.Makey.elderly.dto.LocationResponseDto;
 import com.wootechco.Makey.elderly.dto.PersonRequestDto;
 import com.wootechco.Makey.elderly.dto.PersonResponseDto;
 import com.wootechco.Makey.elderly.repository.PersonRepository;
-import jakarta.annotation.PostConstruct;
-import java.time.LocalDateTime;
+import com.wootechco.Makey.elderly.repository.LocationHistoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class PersonService {
 
-    private final PersonRepository repository;
+    private final PersonRepository personRepository;
+    private final LocationHistoryRepository locationHistoryRepository;
+
+    // =================== CRUD ===================
 
     public PersonResponseDto create(PersonRequestDto dto) {
-        Person person = Person.builder()
-                .name(dto.getName())
-                .age(dto.getAge())
-                .dementiaLevel(dto.getDementiaLevel())
-                .guardianName(dto.getGuardianName())
-                .guardianPhone(dto.getGuardianPhone())
-                .lastSeenPlace(dto.getLastSeenPlace())
-                .status(dto.getStatus())
-                .build();
-        return PersonResponseDto.fromEntity(repository.save(person));
+        Person person = new Person();
+        person.setName(dto.getName());
+        person.setAge(dto.getAge());
+        person.setDementiaLevel(dto.getDementiaLevel());
+        person.setGuardianName(dto.getGuardianName());
+        person.setGuardianPhone(dto.getGuardianPhone());
+
+        Person savedPerson = personRepository.save(person);
+        return new PersonResponseDto(savedPerson);
     }
 
     public List<PersonResponseDto> findAll() {
-        return repository.findAll().stream().map(PersonResponseDto::fromEntity).toList();
+        return personRepository.findAll()
+                .stream()
+                .map(PersonResponseDto::new)
+                .collect(Collectors.toList());
     }
 
     public PersonResponseDto findById(Long id) {
-        return repository.findById(id)
-                .map(PersonResponseDto::fromEntity)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 인물입니다."));
+        Person person = personRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Person not found"));
+        return new PersonResponseDto(person);
     }
 
     public PersonResponseDto update(Long id, PersonRequestDto dto) {
-        Person person = repository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 인물입니다."));
+        Person person = personRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Person not found"));
 
         person.setName(dto.getName());
         person.setAge(dto.getAge());
         person.setDementiaLevel(dto.getDementiaLevel());
         person.setGuardianName(dto.getGuardianName());
         person.setGuardianPhone(dto.getGuardianPhone());
-        person.setLastSeenPlace(dto.getLastSeenPlace());
-        person.setStatus(dto.getStatus());
 
-        return PersonResponseDto.fromEntity(repository.save(person));
+        Person updatedPerson = personRepository.save(person);
+        return new PersonResponseDto(updatedPerson);
     }
 
     public void delete(Long id) {
-        repository.deleteById(id);
+        personRepository.deleteById(id);
     }
 
-    // ✅ 애플리케이션 시작 시 초기 데이터 세팅
-    @PostConstruct
-    public void initData() {
-        if (repository.count() == 0) { // 이미 데이터가 없을 때만 추가
-            repository.save(Person.builder()
-                    .name("홍길동")
-                    .age(75)
-                    .dementiaLevel("중증")
-                    .guardianName("박보호자")
-                    .guardianPhone("010-1234-5678")
-                    .lastSeenPlace("서울역")
-                    .status(Person.Status.MISSING)
-                    .latitude(37.556)  // 예시 GPS
-                    .longitude(126.972)
-                    .lastUpdated(LocalDateTime.now())
-                    .build());
+    // =================== 위치 업데이트 ===================
 
-            repository.save(Person.builder()
-                    .name("김철수")
-                    .age(82)
-                    .dementiaLevel("경증")
-                    .guardianName("이보호자")
-                    .guardianPhone("010-9876-5432")
-                    .lastSeenPlace("강남역")
-                    .status(Person.Status.FOUND)
-                    .latitude(37.498)
-                    .longitude(127.027)
-                    .lastUpdated(LocalDateTime.now())
-                    .build());
+    public LocationResponseDto updateLocation(Long id, LocationRequestDto locationRequestDto) {
+        Person person = personRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Person not found"));
 
-            // 원하면 추가 인물 더 넣을 수 있음
-        }
+        person.setLatitude(locationRequestDto.getLatitude());
+        person.setLongitude(locationRequestDto.getLongitude());
+        person.setLastSeenPlace("위도: " + locationRequestDto.getLatitude() + ", 경도: " + locationRequestDto.getLongitude());
+
+        LocalDateTime timestamp = locationRequestDto.getTimestamp() != null ? locationRequestDto.getTimestamp() : LocalDateTime.now();
+
+        LocationHistory locationHistory = new LocationHistory(person, locationRequestDto.getLatitude(), locationRequestDto.getLongitude(), timestamp);
+        locationHistoryRepository.save(locationHistory);
+
+        personRepository.save(person);
+
+        return new LocationResponseDto(person.getLatitude(), person.getLongitude(), timestamp);
     }
 }

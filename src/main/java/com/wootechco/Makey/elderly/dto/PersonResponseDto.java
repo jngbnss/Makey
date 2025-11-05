@@ -1,12 +1,11 @@
 package com.wootechco.Makey.elderly.dto;
 
 import com.wootechco.Makey.elderly.domain.Person;
-import lombok.*;
-import java.util.List;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-@Getter @Setter
-@NoArgsConstructor @AllArgsConstructor
-@Builder
+@Getter
+@NoArgsConstructor
 public class PersonResponseDto {
     private Long id;
     private String name;
@@ -15,23 +14,19 @@ public class PersonResponseDto {
     private String guardianName;
     private String guardianPhone;
     private String lastSeenPlace;
-    private String status;
-    private List<LocationResponseDto> locations;
+    private Double latitude;
+    private Double longitude;
 
-    public static PersonResponseDto fromEntity(Person person) {
-        return PersonResponseDto.builder()
-                .id(person.getId())
-                .name(person.getName())
-                .age(person.getAge())
-                .dementiaLevel(person.getDementiaLevel())
-                .guardianName(person.getGuardianName())
-                .guardianPhone(person.getGuardianPhone())
-                .lastSeenPlace(person.getLastSeenPlace())
-                .status(person.getStatus().name())
-                .locations(person.getLocationHistoryList()
-                        .stream()
-                        .map(LocationResponseDto::fromEntity)
-                        .toList())
-                .build();
+    // Person 엔티티를 DTO로 변환하는 생성자 추가
+    public PersonResponseDto(Person person) {
+        this.id = person.getId();
+        this.name = person.getName();
+        this.age = person.getAge();
+        this.dementiaLevel = person.getDementiaLevel();
+        this.guardianName = person.getGuardianName();
+        this.guardianPhone = person.getGuardianPhone();
+        this.lastSeenPlace = person.getLastSeenPlace();
+        this.latitude = person.getLatitude();
+        this.longitude = person.getLongitude();
     }
 }
