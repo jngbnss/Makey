@@ -21,7 +21,7 @@ git add .
 
 # 4️⃣ 커밋 메시지 작성
 git add .
-git commit -m "feat: 노인 초기 데이터 추가"
+git commit -m "feat: Geocoding GPS API 추가"
 git push origin spring-backend
 # 5️⃣ spring-backend 브랜치에 push
 git push origin spring-backend
