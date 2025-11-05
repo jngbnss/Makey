@@ -21,7 +21,7 @@ git add .
 
 # 4️⃣ 커밋 메시지 작성
 git add .
-git commit -m "docs:브랜치 명령어 수정"
+git commit -m "feat:elderly Person"
 git push origin spring-backend
 # 5️⃣ spring-backend 브랜치에 push
 git push origin spring-backend
