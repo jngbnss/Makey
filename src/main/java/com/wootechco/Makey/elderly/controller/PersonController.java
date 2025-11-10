@@ -42,30 +42,30 @@ public class PersonController {
     public void initData() {
         // 초기 데이터 생성
         PersonRequestDto person1 = PersonRequestDto.builder()
-                .name("김철수")
+                .name("김노인")
                 .age(78)
                 .dementiaLevel("경증")
-                .guardianName("김보호")
+                .guardianName("최보호자")
                 .guardianPhone("010-1234-5678")
                 .latitude(37.5665)
                 .longitude(126.9780)
                 .build();
 
         PersonRequestDto person2 = PersonRequestDto.builder()
-                .name("박깍두기")
+                .name("이노인")
                 .age(82)
                 .dementiaLevel("중증")
-                .guardianName("박보호")
+                .guardianName("정보호자")
                 .guardianPhone("010-8765-4321")
                 .latitude(37.5796)
                 .longitude(126.9770)
                 .build();
 
         PersonRequestDto person3 = PersonRequestDto.builder()
-                .name("이영희")
+                .name("박노인")
                 .age(85)
                 .dementiaLevel("초기")
-                .guardianName("이보람")
+                .guardianName("강보호자")
                 .guardianPhone("010-5555-7777")
                 .latitude(37.5830)
                 .longitude(126.9800)
