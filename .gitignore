@@ -38,3 +38,5 @@ out/
 
 # 예시: 만약 로컬에 민감한 설정 파일을 따로 두고 싶다면
 application-local.yml
+/application-secret.yml
+
