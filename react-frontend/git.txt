@@ -1,39 +1,8 @@
-git init
-git remote add origin https://github.com/jngbnss/JavaBasicStudy.git
-git add .
-git commit -m "Initial commit from IntelliJ"
-git branch -M main
-git push -u origin main
-
-
 
 git add .
-git commit -m "feat: 노인 gps api 추가"
+git commit -m "refactor: 메인화면 노인에서 실종된 치매 노인 위치 추적으로 변경"
 git push origin add-react-frontend
 
-
-
-
-
-git add .
-git commit -m "fix : WebConfig 연결 주소 오타"
-git push
-# 1️⃣ spring-backend 브랜치로 이동
-git checkout spring-backend
-
-add-react-frontend
-# 2️⃣ main 브랜치의 최신 코드 가져오기 (pull & merge)
-git pull origin main
-
-# 3️⃣ 코드 수정 후 변경사항 반영
-git add .
-
-# 4️⃣ 커밋 메시지 작성
-git add .
-git commit -m "feat:GPS 서비스 및 컨트롤러"
-git push origin spring-backend
-# 5️⃣ spring-backend 브랜치에 push
-git push origin spring-backend
 
 | 타입            | 의미                    |
 | ------------- | --------------------- |

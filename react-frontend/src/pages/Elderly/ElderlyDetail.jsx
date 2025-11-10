@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import "./ElderlyDetail.css";
@@ -6,9 +6,20 @@ import "./ElderlyDetail.css";
 export default function ElderlyDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [person, setPerson] = useState(null);
-  const [location, setLocation] = useState(null);
+  const mapRef = useRef(null);
+  const [map, setMap] = useState(null);
+  const [marker, setMarker] = useState(null);
+  const [person, setPerson] = useState({
+    name: "",
+    age: 0,
+    dementiaLevel: "",
+    guardianName: "",
+    guardianPhone: "",
+    lastSeenPlace: "위도: 37.5665, 경도: 126.978",
+    status: "",
+  });
 
+  // 실제 데이터 가져오기
   useEffect(() => {
     axios
       .get(`http://localhost:8080/api/persons/${id}`)
@@ -16,6 +27,65 @@ export default function ElderlyDetail() {
       .catch((err) => console.error(err));
   }, [id]);
 
+  // 카카오맵 API 스크립트 로딩
+  useEffect(() => {
+    const initMap = () => {
+      if (window.kakao && mapRef.current && !map) {
+        const kakaoMap = new window.kakao.maps.Map(mapRef.current, {
+          center: new window.kakao.maps.LatLng(37.5665, 126.978),
+          level: 4,
+        });
+
+        setMap(kakaoMap);
+
+        const initialMarker = new window.kakao.maps.Marker({
+          position: kakaoMap.getCenter(),
+          map: kakaoMap,
+        });
+
+        setMarker(initialMarker);
+      }
+    };
+
+    // 백엔드에서 카카오맵 스크립트 URL 가져오기
+    axios
+      .get("http://localhost:8080/api/proxy/kakao-map")  // 스프링 서버로부터 URL 가져오기
+      .then((res) => {
+        const script = document.createElement("script");
+        script.src = res.data;  // 백엔드에서 전달받은 카카오맵 URL
+        script.async = true;
+
+        script.onload = () => {
+          console.log("✅ 카카오 맵 스크립트 로딩 완료");
+          window.kakao.maps.load(initMap);
+        };
+
+        script.onerror = () => {
+          console.error("❌ 카카오 맵 스크립트 로딩 실패");
+        };
+
+        document.head.appendChild(script);
+      })
+      .catch((err) => console.error("카카오 맵 API 로드 실패:", err));
+  }, [map]);
+
+  // lastSeenPlace 변경 시 마커 위치 이동
+  useEffect(() => {
+    if (!map || !marker || !person?.lastSeenPlace) return;
+
+    const [latStr, lngStr] = person.lastSeenPlace
+      .replace("위도:", "")
+      .replace("경도:", "")
+      .split(",")
+      .map((s) => parseFloat(s.trim()));
+
+    const newPosition = new window.kakao.maps.LatLng(latStr, lngStr);
+
+    marker.setPosition(newPosition);
+    map.setCenter(newPosition);
+  }, [person?.lastSeenPlace, map, marker]);
+
+  // ✅ 삭제
   const handleDelete = () => {
     if (window.confirm("정말 삭제하시겠습니까?")) {
       axios.delete(`http://localhost:8080/api/persons/${id}`).then(() => {
@@ -24,29 +94,17 @@ export default function ElderlyDetail() {
     }
   };
 
+  // ✅ 랜덤 GPS 이동
   const handleStartRandomGPS = () => {
-    // 알림을 통해 GPS 추적 시작 안내
-    alert("GPS 위치 추적이 시작되었습니다. 위치 정보를 업데이트 중입니다.");
+    const randomLat = 37.5665 + (Math.random() - 0.5) * 0.02;
+    const randomLng = 126.978 + (Math.random() - 0.5) * 0.02;
 
-    // 랜덤 위치 업데이트 요청
-    axios
-      .put(`http://localhost:8080/api/persons/${id}/updateRandomLocation`)
-      .then((res) => {
-        const roundedLatitude = res.data.latitude.toFixed(2);  // 위도 소수점 2자리 반올림
-        const roundedLongitude = res.data.longitude.toFixed(2);  // 경도 소수점 2자리 반올림
+    setPerson((prev) => ({
+      ...prev,
+      lastSeenPlace: `위도: ${randomLat.toFixed(5)}, 경도: ${randomLng.toFixed(5)}`,
+    }));
 
-        alert(`랜덤 위치가 업데이트되었습니다! 새로운 위치: 위도: ${roundedLatitude}, 경도: ${roundedLongitude}`);
-
-        // 업데이트된 위치를 person에 반영
-        setPerson((prevPerson) => ({
-          ...prevPerson,
-          lastSeenPlace: `위도: ${roundedLatitude}, 경도: ${roundedLongitude}`,
-        }));
-      })
-      .catch((err) => {
-        console.error(err);
-        alert("위치 업데이트에 실패했습니다.");
-      });
+    alert(`랜덤 위치 업데이트!\n위도: ${randomLat.toFixed(5)}, 경도: ${randomLng.toFixed(5)}`);
   };
 
   if (!person) return <p>로딩 중...</p>;
@@ -59,7 +117,10 @@ export default function ElderlyDetail() {
         </button>
         <h2 className="title">상세 정보</h2>
         <div>
-          <button className="edit-btn" onClick={() => navigate(`/elderly/${id}/edit`)}>
+          <button
+            className="edit-btn"
+            onClick={() => navigate(`/elderly/${id}/edit`)}
+          >
             수정
           </button>
           <button className="delete-btn" onClick={handleDelete}>
@@ -82,12 +143,10 @@ export default function ElderlyDetail() {
         <button onClick={handleStartRandomGPS} className="start-random-gps-btn">
           GPS 시작하기
         </button>
-        {location && (
-          <p>
-            <strong>현재 위치:</strong> {location.latitude}, {location.longitude}
-          </p>
-        )}
       </div>
+
+      {/* ✅ 지도 영역 */}
+      <div ref={mapRef} className="gps-map"></div>
     </div>
   );
 }
