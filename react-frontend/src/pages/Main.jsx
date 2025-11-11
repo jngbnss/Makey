@@ -14,14 +14,22 @@ export default function Main() {
     "건강/의료",
     "행정/법률",
     "채팅",
+    "레이싱 게임", // 새로 추가
   ];
 
   const handleClick = (item) => {
-    if (item === "게시판") {
-      navigate("/posts"); // 게시판 클릭 시 게시판 목록 페이지로 이동
-    }
-    if (item === "실종된 치매 노인 위치 추적") {
-      navigate("/elderly");
+    switch(item) {
+      case "게시판":
+        navigate("/posts");
+        break;
+      case "실종된 치매 노인 위치 추적":
+        navigate("/elderly");
+        break;
+      case "레이싱 게임":
+        navigate("/game"); // 게임 페이지로 이동
+        break;
+      default:
+        alert(`${item} 페이지는 아직 준비되지 않았습니다`);
     }
   };
 

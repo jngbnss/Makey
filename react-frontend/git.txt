@@ -1,6 +1,6 @@
 
 git add .
-git commit -m "refactor: 메인화면 노인에서 실종된 치매 노인 위치 추적으로 변경"
+git commit -m "feat: 레이싱게임"
 git push origin add-react-frontend
 
 

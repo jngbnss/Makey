@@ -1,0 +1,83 @@
+/* GameMain.css */
+
+/* 전체 컨테이너: 화면 가운데 정렬, 배경색 */
+.game-main-container {
+    min-height: 100vh;
+    /* 화면 높이 채우기 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background-color: #f0f4f8;
+    /* 연한 배경색 */
+}
+
+/* 카드 스타일: SetupForm / GameBoard 감싸는 박스 */
+.game-main-card {
+    width: 100%;
+    max-width: 500px;
+    /* 최대 폭 제한 */
+    background-color: #fff;
+    /* 흰색 카드 */
+    border-radius: 10px;
+    /* 모서리 둥글게 */
+    padding: 30px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    /* 그림자 */
+    box-sizing: border-box;
+    /* 패딩 포함 폭 계산 */
+}
+
+/* 입력폼 스타일 */
+.game-main-card input[type="text"],
+.game-main-card input[type="number"],
+.game-main-card select {
+    width: 100%;
+    padding: 10px 15px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+/* 버튼 스타일 */
+.game-main-card button {
+    width: 100%;
+    padding: 12px 0;
+    background-color: #4f46e5;
+    /* 보라색 계열 */
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.game-main-card button:hover {
+    background-color: #4338ca;
+    /* 호버 시 색 변경 */
+}
+
+/* GameBoard 내부 요소 예시 (간단하게 카드 안쪽 패딩) */
+.game-main-card .game-board {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* 모바일 대응 */
+@media (max-width: 600px) {
+    .game-main-card {
+        padding: 20px;
+    }
+
+    .game-main-card input,
+    .game-main-card button {
+        font-size: 14px;
+        padding: 10px;
+    }
+}
