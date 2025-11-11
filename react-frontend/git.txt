@@ -1,6 +1,7 @@
+git pull
 
 git add .
-git commit -m "feat: 레이싱게임"
+git commit -m "refactor: 실시간 위치 카카오 맵에 표시 "
 git push origin add-react-frontend
 
 

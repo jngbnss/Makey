@@ -1,83 +1,52 @@
 /* GameMain.css */
 
-/* 전체 컨테이너: 화면 가운데 정렬, 배경색 */
-.game-main-container {
-    min-height: 100vh;
-    /* 화면 높이 채우기 */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    background-color: #f0f4f8;
-    /* 연한 배경색 */
+.game-container.game-board {
+  width: 100%;
+  min-height: 100vh;
+  padding: 30px;
+  background: linear-gradient(160deg, #1b2735, #090a0f); /* 다크 스포티 배경 */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 25px;
+  color: #fff;
+  font-family: 'Arial Black', sans-serif;
 }
 
-/* 카드 스타일: SetupForm / GameBoard 감싸는 박스 */
-.game-main-card {
-    width: 100%;
-    max-width: 500px;
-    /* 최대 폭 제한 */
-    background-color: #fff;
-    /* 흰색 카드 */
-    border-radius: 10px;
-    /* 모서리 둥글게 */
-    padding: 30px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    /* 그림자 */
-    box-sizing: border-box;
-    /* 패딩 포함 폭 계산 */
+.game-container.game-board h2,
+.game-container.game-board h3,
+.game-container.game-board h4 {
+  text-shadow: 1px 1px 3px #000;
 }
 
-/* 입력폼 스타일 */
-.game-main-card input[type="text"],
-.game-main-card input[type="number"],
-.game-main-card select {
-    width: 100%;
-    padding: 10px 15px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 16px;
-    box-sizing: border-box;
+.game-container.game-board button {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(90deg, #ffdd00, #ff8000);
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
 }
 
-/* 버튼 스타일 */
-.game-main-card button {
-    width: 100%;
-    padding: 12px 0;
-    background-color: #4f46e5;
-    /* 보라색 계열 */
-    color: #fff;
-    border: none;
-    border-radius: 6px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
+.game-container.game-board button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.7);
 }
 
-.game-main-card button:hover {
-    background-color: #4338ca;
-    /* 호버 시 색 변경 */
+.player {
+  font-size: 20px;
+  font-weight: bold;
+  color: #ffdd00;
+  text-shadow: 1px 1px 2px #000;
 }
 
-/* GameBoard 내부 요소 예시 (간단하게 카드 안쪽 패딩) */
-.game-main-card .game-board {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+ol {
+  padding-left: 20px;
 }
 
-/* 모바일 대응 */
-@media (max-width: 600px) {
-    .game-main-card {
-        padding: 20px;
-    }
-
-    .game-main-card input,
-    .game-main-card button {
-        font-size: 14px;
-        padding: 10px;
-    }
+ol li {
+  margin-bottom: 6px;
 }

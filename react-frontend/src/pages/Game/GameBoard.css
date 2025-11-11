@@ -1,0 +1,37 @@
+.player-track {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.track-box {
+  position: relative;
+  flex: 1;
+  height: 30px;
+  background: #222;
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+.track-progress {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.2);
+  transition: width 0.3s linear;
+}
+
+.car {
+  position: absolute;
+  top: 50%;
+  transform: translate(50%, -50%);
+  font-size: 22px;      /* ✅ 더 작은 자동차 */
+  transition: right 0.3s linear;
+}
+
+.dice-box {
+  width: 60px;
+  text-align: center;
+  font-weight: bold;
+  color: #fff;
+}
