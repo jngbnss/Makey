@@ -1,12 +1,10 @@
 package com.wootechco.Makey.racinggame.service;
-
 import com.wootechco.Makey.racinggame.model.Game;
 import com.wootechco.Makey.racinggame.model.Player;
 import com.wootechco.Makey.racinggame.repository.GameRepository;
 import com.wootechco.Makey.racinggame.repository.PlayerRepository;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,27 +19,21 @@ public class GameService {
         this.gameRepository = gameRepository;
         this.playerRepository = playerRepository;
     }
+
     @Transactional
     public Game startGame(int rounds, List<String> playerNames) {
         Game game = new Game(rounds);
-
-        // 먼저 game 저장
         Game savedGame = gameRepository.save(game);
 
-        // Player 생성 및 game과 연결
         List<Player> players = playerNames.stream()
                 .map(name -> new Player(name, savedGame))
-                .collect(Collectors.toList()); // Java 8 기준
+                .toList();
 
-        // player 저장
         playerRepository.saveAll(players);
-
-        // game 엔티티에 players 설정
-        savedGame.getPlayers().addAll(players);
+        savedGame.addPlayers(players);
 
         return savedGame;
     }
-
 
     @Transactional
     public Game playRound(Long gameId) {
@@ -52,10 +44,13 @@ public class GameService {
 
         for (Player player : game.getPlayers()) {
             int dice = random.nextInt(6) + 1;
-            if (dice >= 3) {
+            player.setLastDice(dice);
+
+            if (dice >= 4) {  // ✅ 조건 반영
                 player.move();
-                playerRepository.save(player);
             }
+
+            playerRepository.save(player);
         }
 
         game.nextRound();

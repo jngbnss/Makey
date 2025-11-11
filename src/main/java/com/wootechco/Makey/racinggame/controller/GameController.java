@@ -1,15 +1,15 @@
 package com.wootechco.Makey.racinggame.controller;
-
-
 import com.wootechco.Makey.racinggame.model.Game;
 import com.wootechco.Makey.racinggame.service.GameService;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/game")
-//@CrossOrigin(origins = "http://localhost:3000")
 public class GameController {
 
     private final GameService gameService;
@@ -19,13 +19,13 @@ public class GameController {
     }
 
     @PostMapping("/start")
-    public Game startGame(@RequestBody StartRequest request) {
-        return gameService.startGame(request.rounds, request.playerNames);
+    public Game startGame(@RequestBody StartRequest req) {
+        return gameService.startGame(req.rounds, req.playerNames);
     }
 
-    @PostMapping("/{gameId}/round")
-    public Game playRound(@PathVariable Long gameId) {
-        return gameService.playRound(gameId);
+    @PostMapping("/{id}/round")
+    public Game playRound(@PathVariable Long id) {
+        return gameService.playRound(id);
     }
 
     public static class StartRequest {
