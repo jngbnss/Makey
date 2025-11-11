@@ -21,7 +21,7 @@ git add .
 
 # 4️⃣ 커밋 메시지 작성
 git add .
-git commit -m "refactor: 노인,보호자 초기 데이터 수정"
+git commit -m "feat: 레이싱 게임"
 git push origin spring-backend
 # 5️⃣ spring-backend 브랜치에 push
 git push origin spring-backend
