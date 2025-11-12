@@ -28,6 +28,11 @@ export default function Main() {
       case "레이싱 게임":
         navigate("/game"); // 게임 페이지로 이동
         break;
+        case "채팅":
+        // ✅ Spring Boot 서버의 HTML로 이동
+        //window.location.href = "http://localhost:8080/randomNicknameChat.html";
+        window.location.href = "http://localhost:8080/chatv1/index.html";
+        break;
       default:
         alert(`${item} 페이지는 아직 준비되지 않았습니다`);
     }
