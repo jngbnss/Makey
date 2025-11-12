@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8"> <!-- ✅ 추가 -->
+  <title>WebSocket Chat</title>
+  <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+</head>
+<body>
+<h2>Spring WebSocket Chat</h2>
+
+<label>닉네임: </label>
+<input type="text" id="nickname" placeholder="이름 입력">
+<br><br>
+
+<input type="text" id="message" placeholder="메시지 입력">
+<button onclick="sendMessage()">보내기</button>
+
+<ul id="chat"></ul>
+
+<script>
+  const socket = new SockJS('/ws');
+  const stomp = Stomp.over(socket);
+
+  stomp.connect({}, () => {
+      console.log('✅ 연결됨');
+      stomp.subscribe('/topic/messages', (msg) => {
+          const data = JSON.parse(msg.body);
+          const li = document.createElement('li');
+          li.textContent = data.sender + ': ' + data.content;
+          document.getElementById('chat').appendChild(li);
+      });
+  });
+
+  function sendMessage() {
+      const msg = document.getElementById('message').value;
+      const sender = document.getElementById('nickname').value || '익명';
+      stomp.send('/app/send', {}, JSON.stringify({ sender: sender, content: msg }));
+      document.getElementById('message').value = '';
+  }
+</script>
+</body>
+</html>

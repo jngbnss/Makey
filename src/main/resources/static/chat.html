@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>진격의 거인 WebSocket Chat</title>
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+    <style>
+        body { font-family: "Noto Sans KR", sans-serif; padding: 20px; background: #f8f9fa; }
+        h2 { color: #333; }
+        input, button { font-size: 16px; padding: 8px; border-radius: 8px; border: 1px solid #ccc; }
+        button { background-color: #007bff; color: white; cursor: pointer; }
+        button:hover { background-color: #0056b3; }
+        ul { list-style: none; padding: 0; }
+        li { background: white; padding: 10px; margin: 5px 0; border-radius: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
+        #nickname { font-weight: bold; color: #007bff; }
+    </style>
+</head>
+<body>
+<h2>🗡️ 진격의 거인 채팅방</h2>
+
+<p>당신의 닉네임: <span id="nickname"></span></p>
+
+<input type="text" id="message" placeholder="메시지를 입력하세요" onkeydown="if(event.key==='Enter') sendMessage()">
+<button onclick="sendMessage()">보내기</button>
+
+<ul id="chat"></ul>
+
+<script>
+    // ⚔️ 진격의 거인 랜덤 닉네임 생성
+    const emojis = ['🦁', '🐯', '🐺', '🦊', '🐉', '🐻', '🐲', '🐵'];
+    const names = [
+        '에렌', '리바이', '미카사', '아르민', '한지',
+        '사샤', '코니', '에르빈', '지크', '히스토리아',
+        '라이너', '베르톨트', '파록', '케니', '닐', '마를로'
+    ];
+    const emoji = emojis[Math.floor(Math.random() * emojis.length)];
+    const name = names[Math.floor(Math.random() * names.length)];
+    const nickname = emoji + ' ' + name;
+    document.getElementById('nickname').textContent = nickname;
+
+    // 🕸️ WebSocket 연결
+    const socket = new SockJS('/ws');
+    const stomp = Stomp.over(socket);
+
+    stomp.connect({}, () => {
+        console.log('✅ 서버와 연결됨');
+        stomp.subscribe('/topic/messages', (msg) => {
+            const data = JSON.parse(msg.body);
+            const li = document.createElement('li');
+            li.textContent = data.sender + ': ' + data.content;
+            document.getElementById('chat').appendChild(li);
+        });
+    });
+
+    // ✉️ 메시지 전송
+    function sendMessage() {
+        const msg = document.getElementById('message').value.trim();
+        if (msg === '') return;
+        stomp.send('/app/send', {}, JSON.stringify({ sender: nickname, content: msg }));
+        document.getElementById('message').value = '';
+    }
+</script>
+</body>
+</html>

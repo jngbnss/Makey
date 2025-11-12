@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <title>💬 채팅방 목록</title>
+    <style>
+        body {
+            font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
+            background: linear-gradient(135deg, #d9f7f3, #a7ecec);
+            color: #033333;
+            text-align: center;
+            padding: 60px 30px;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* ← 뒤로가기 버튼 */
+        .back-btn {
+            position: absolute;
+            top: 25px;
+            left: 25px;
+            background: #00aaa3;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 10px 18px;
+            font-size: 0.95em;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 170, 163, 0.25);
+            transition: 0.2s ease;
+        }
+
+        .back-btn:hover {
+            background: #22cfc5;
+            transform: translateY(-2px);
+        }
+
+        h2 {
+            color: #007c77;
+            font-size: 2.2em;
+            margin-bottom: 40px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 🧩 채팅방 목록을 반응형 그리드로 */
+        #room-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 25px;
+            width: 100%;
+            max-width: 900px;
+            padding: 0;
+            list-style: none;
+        }
+
+        #room-list li {
+            list-style: none;
+        }
+
+        /* 💬 각 채팅방 카드 스타일 */
+        a {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 130px;
+            border-radius: 25px;
+            color: white;
+            font-weight: bold;
+            font-size: 1.15em;
+            text-decoration: none;
+            transition: 0.25s ease;
+            box-shadow: 0 6px 18px rgba(0, 170, 163, 0.25);
+        }
+
+        a:hover {
+            transform: translateY(-6px) scale(1.04);
+            box-shadow: 0 10px 25px rgba(0, 170, 163, 0.35);
+        }
+
+        /* 🌈 카드별 색상 패턴을 6개마다 반복 */
+        #room-list li:nth-child(6n+1) a { background: linear-gradient(135deg, #00aaa3, #22cfc5); }
+        #room-list li:nth-child(6n+2) a { background: linear-gradient(135deg, #ff9966, #ff5e62); }
+        #room-list li:nth-child(6n+3) a { background: linear-gradient(135deg, #667eea, #764ba2); }
+        #room-list li:nth-child(6n+4) a { background: linear-gradient(135deg, #ff9a9e, #fad0c4); color: #552233; }
+        #room-list li:nth-child(6n+5) a { background: linear-gradient(135deg, #2b5876, #4e4376); }
+        #room-list li:nth-child(6n+6) a { background: linear-gradient(135deg, #56ab2f, #a8e063); }
+
+        /* 📱 반응형 */
+        @media (max-width: 500px) {
+            a {
+                height: 100px;
+                font-size: 1em;
+                border-radius: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- 🔙 뒤로가기 버튼 -->
+<button class="back-btn" onclick="goBack()">← 뒤로가기</button>
+
+<h2>💬 채팅방 목록</h2>
+<ul id="room-list">
+    <li><a href="/chat/room.html?roomId=1&roomName=☕ 수다 카페">☕ 수다 카페</a></li>
+    <li><a href="/chat/room.html?roomId=2&roomName=💻 코딩 연구소">💻 코딩 연구소</a></li>
+    <li><a href="/chat/room.html?roomId=3&roomName=🎮 게임 토론방">🎮 게임 토론방</a></li>
+    <li><a href="/chat/room.html?roomId=4&roomName=🎨 아트 갤러리">🎨 아트 갤러리</a></li>
+    <li><a href="/chat/room.html?roomId=5&roomName=🎵 음악 감상실">🎵 음악 감상실</a></li>
+    <li><a href="/chat/room.html?roomId=6&roomName=🌿 힐링 카페">🌿 힐링 카페</a></li>
+    <li><a href="/chat/room.html?roomId=7&roomName=🍜 전국 맛집 모임">🍜 전국 맛집 모임</a></li>
+    <li><a href="/chat/room.html?roomId=8&roomName=📸 여행 사진방">📸 여행 사진방</a></li>
+    <li><a href="/chat/room.html?roomId=9&roomName=📚 독서 토론방">📚 독서 토론방</a></li>
+    <li><a href="/chat/room.html?roomId=10&roomName=💬 일상 대화방">💬 일상 대화방</a></li>
+    <li><a href="/chat/room.html?roomId=11&roomName=🐶 반려동물 이야기">🐶 반려동물 이야기</a></li>
+    <li><a href="/chat/room.html?roomId=12&roomName=💡 아이디어 공유방">💡 아이디어 공유방</a></li>
+</ul>
+
+<script>
+    function goBack() {
+        window.location.href = "http://localhost:5173/";
+    }
+</script>
+
+</body>
+</html>

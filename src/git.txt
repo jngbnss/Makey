@@ -14,14 +14,15 @@ git push
 git checkout spring-backend
 
 # 2️⃣ main 브랜치의 최신 코드 가져오기 (pull & merge)
-git pull origin main
+git pull
+origin main
 
 # 3️⃣ 코드 수정 후 변경사항 반영
 git add .
 
 # 4️⃣ 커밋 메시지 작성
 git add .
-git commit -m "refactor: 레이싱 게임 수정"
+git commit -m "feat: 채팅방"
 git push origin spring-backend
 
 # 5️⃣ spring-backend 브랜치에 push
