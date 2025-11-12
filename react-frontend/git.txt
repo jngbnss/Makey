@@ -1,7 +1,7 @@
 git pull
 
 git add .
-git commit -m "feat: 채팅 기능 추가 "
+git commit -m "refactor: 링크 이름 수정 "
 git push origin add-react-frontend
 
 
