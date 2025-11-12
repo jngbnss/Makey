@@ -14,7 +14,7 @@ export default function Main() {
     "건강/의료",
     "행정/법률",
     "채팅",
-    "레이싱 게임", // 새로 추가
+    "레이싱 게임",
   ];
 
   const handleClick = (item) => {
@@ -26,11 +26,9 @@ export default function Main() {
         navigate("/elderly");
         break;
       case "레이싱 게임":
-        navigate("/game"); // 게임 페이지로 이동
+        navigate("/game");
         break;
-        case "채팅":
-        // ✅ Spring Boot 서버의 HTML로 이동
-        //window.location.href = "http://localhost:8080/randomNicknameChat.html";
+      case "채팅":
         window.location.href = "http://localhost:8080/chat/index.html";
         break;
       default:
@@ -40,6 +38,13 @@ export default function Main() {
 
   return (
     <div className="container">
+      {/* 상단 로고 + 슬로건 */}
+      <header className="main-header">
+        <h1 className="main-title">MAKEY</h1>
+        <p className="main-subtitle">Make your day, make your life with Makey</p>
+      </header>
+
+      {/* 카드 메뉴 */}
       <div className="grid-box">
         {items.map((item, idx) => (
           <div key={idx} className="card" onClick={() => handleClick(item)}>

@@ -2,7 +2,7 @@
 body {
   margin: 0;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, #fff8f0 0%, #ffe6cc 100%);
+  background: linear-gradient(135deg, #fdf6f0 0%, #f5eadc 100%); /* 부드러운 크림+베이지 */
   min-height: 100vh;
   display: flex;
   justify-content: center;
@@ -13,7 +13,7 @@ body {
 .app-container {
   width: 100%;
   max-width: 800px;
-  background-color: #fff3e6;
+  background-color: #fff8f2; /* 연한 크림 */
   padding: 30px;
   border-radius: 20px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
@@ -28,15 +28,15 @@ body {
 /* 제목 스타일 */
 h1 {
   text-align: center;
-  color: #ff8c42;
+  color: #b66d40; /* 세련된 브론즈 */
   margin-bottom: 30px;
   font-size: 2.2rem;
-  text-shadow: 1px 1px 4px rgba(255, 184, 77, 0.4);
+  text-shadow: 1px 1px 4px rgba(182, 109, 64, 0.4);
 }
 
 /* 버튼 스타일 */
 .app-button {
-  background-color: #ffb84d;
+  background-color: #d2935b; /* 은은한 골드/코퍼 */
   border: none;
   border-radius: 12px;
   padding: 10px 18px;
@@ -44,19 +44,19 @@ h1 {
   color: white;
   cursor: pointer;
   font-weight: bold;
-  box-shadow: 0 4px 6px rgba(255, 184, 77, 0.4);
+  box-shadow: 0 4px 6px rgba(210, 147, 91, 0.4);
   transition: all 0.3s ease;
 }
 
 .app-button:hover {
-  background-color: #ffaa33;
+  background-color: #b66d40; /* 호버 시 진한 브론즈 */
   transform: translateY(-3px) scale(1.02);
-  box-shadow: 0 6px 12px rgba(255, 184, 77, 0.5);
+  box-shadow: 0 6px 12px rgba(182, 109, 64, 0.5);
 }
 
 /* 프로필 카드 */
 .app-profile-card {
-  background-color: #fff3e6;
+  background-color: #fff8f2;
   padding: 14px 20px;
   margin-bottom: 12px;
   border-radius: 16px;
@@ -66,7 +66,7 @@ h1 {
 }
 
 .app-profile-card:hover {
-  background-color: #ffe6cc;
+  background-color: #f5e3d0; /* 호버 시 살짝 밝은 베이지 */
   transform: translateY(-3px) scale(1.01);
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
 }
@@ -75,7 +75,7 @@ h1 {
 .selected-post {
   max-width: 600px;
   margin: 20px auto;
-  background-color: #fff3e6;
+  background-color: #fff8f2;
   padding: 25px;
   border-radius: 16px;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
@@ -92,7 +92,7 @@ h1 {
   padding: 10px;
   margin: 5px 0;
   border-radius: 10px;
-  border: 1px solid #ffd699;
+  border: 1px solid #d2a679; /* 은은한 브론즈 */
   width: 100%;
   box-sizing: border-box;
   transition: all 0.2s ease;
@@ -100,13 +100,13 @@ h1 {
 
 .app-input:focus {
   outline: none;
-  border-color: #ff8c42;
-  box-shadow: 0 0 8px #ffb84d;
+  border-color: #b66d40;
+  box-shadow: 0 0 8px #d2935b;
 }
 
 /* 뒤로가기 버튼 스타일 */
 .app-back-button {
-  background-color: #ff8c42;
+  background-color: #d2935b;
   border: none;
   border-radius: 12px;
   padding: 8px 15px;
@@ -114,12 +114,12 @@ h1 {
   color: white;
   cursor: pointer;
   font-weight: bold;
-  box-shadow: 0 4px 6px rgba(255, 140, 66, 0.5);
+  box-shadow: 0 4px 6px rgba(210, 147, 91, 0.5);
   transition: all 0.3s ease;
 }
 
 .app-back-button:hover {
-  background-color: #ff8c00;
+  background-color: #b66d40;
   transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 6px 12px rgba(255, 140, 66, 0.6);
+  box-shadow: 0 6px 12px rgba(182, 109, 64, 0.6);
 }

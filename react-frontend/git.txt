@@ -1,9 +1,10 @@
 git pull
 
 git add .
-git commit -m "refactor: 링크 이름 수정 "
+git commit -m "docs: 깃txt 추가 "
 git push origin add-react-frontend
 
+npm run dev
 
 | 타입            | 의미                    |
 | ------------- | --------------------- |
