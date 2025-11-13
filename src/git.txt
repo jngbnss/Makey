@@ -8,7 +8,7 @@ git push -u origin main
 git pull origin main
 
 git add .
-git commit -m "fix : WebConfig 연결 주소 오타"
+git commit -m "refactor : aws db설정 yml수정"
 git push
 # 1️⃣ spring-backend 브랜치로 이동
 git checkout spring-backend
