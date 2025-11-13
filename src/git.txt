@@ -22,7 +22,7 @@ git add .
 
 # 4️⃣ 커밋 메시지 작성
 git add .
-git commit -m "feat: 채팅방"
+git commit -m "chore: aws 설정"
 git push origin spring-backend
 
 # 5️⃣ spring-backend 브랜치에 push
