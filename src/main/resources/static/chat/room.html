@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <title>💬 채팅방</title>
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #d9f7f3, #a7ecec);
+            --main-color: #007c77;
+            --sub-color: #00aaa3;
+            --accent-color: #22cfc5;
+            --text-color: #033333;
+        }
+
+        body {
+            font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
+            background: var(--bg-gradient);
+            color: var(--text-color);
+            text-align: center;
+            padding: 40px;
+            transition: 0.4s ease-in-out;
+        }
+
+        h2 {
+            font-size: 2em;
+            margin-bottom: 5px;
+            color: var(--main-color);
+        }
+
+        #room {
+            margin-bottom: 20px;
+            font-size: 1.1em;
+            color: var(--main-color);
+        }
+
+        .nickname-display {
+            margin-bottom: 15px;
+            font-size: 1.1em;
+            color: var(--sub-color);
+        }
+
+        /* 💬 채팅창 */
+        #chat {
+            list-style: none;
+            padding: 10px;
+            margin: 0 auto 20px auto;
+            width: 90%;
+            max-width: 800px;
+            height: 500px;
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: 20px;
+            border: 1px solid rgba(0,0,0,0.1);
+            overflow-y: auto;
+            text-align: left;
+            box-shadow: 0 6px 25px rgba(0, 128, 128, 0.15);
+        }
+
+        #chat li {
+            padding: 10px 15px;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            word-wrap: break-word;
+        }
+
+        /* 💬 입력창 */
+        .input-box {
+            width: 90%;
+            max-width: 800px;
+            margin: 0 auto 10px auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #message {
+            flex: 1;
+            padding: 8px;
+            border-radius: 8px;
+            border: 1px solid #8fd9d3;
+            outline: none;
+            font-size: 0.95em;
+        }
+
+        #message:focus {
+            border-color: var(--sub-color);
+            box-shadow: 0 0 4px var(--accent-color);
+        }
+
+        button {
+            padding: 8px 14px;
+            border: none;
+            border-radius: 8px;
+            background: var(--sub-color);
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+            margin-left: 8px;
+            transition: 0.2s;
+        }
+
+        button:hover {
+            background: var(--accent-color);
+            transform: scale(1.03);
+        }
+
+        /* 🔙 상단 버튼 영역 */
+        .top-buttons {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .nav-btn {
+            background: var(--sub-color);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 8px 16px;
+            font-size: 0.9em;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 170, 163, 0.25);
+            transition: 0.2s ease;
+        }
+
+        .nav-btn:hover {
+            background: var(--accent-color);
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 500px) {
+            #chat {
+                height: 400px;
+            }
+
+            .nav-btn {
+                padding: 6px 12px;
+                font-size: 0.85em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- 🔙 상단 버튼 -->
+<div class="top-buttons">
+    <button class="nav-btn" onclick="goToList()">← 채팅목록</button>
+    <button class="nav-btn" onclick="goToMain()">🏠 메인으로</button>
+</div>
+
+<h2 id="roomTitle">💬 채팅방</h2>
+<p id="room"></p>
+<div class="nickname-display" id="nicknameDisplay"></div>
+
+<div class="input-box">
+    <input type="text" id="message" placeholder="메시지를 입력하세요">
+    <button onclick="sendMessage()">전송</button>
+</div>
+
+<ul id="chat"></ul>
+
+<script>
+    // ⚔️ 랜덤 닉네임 생성
+    const emojis = ['🦁', '🐯', '🐺', '🦊', '🐉', '🐻', '🐲', '🐵'];
+    const names = [
+        '에렌', '리바이', '미카사', '아르민', '한지',
+        '사샤', '코니', '에르빈', '지크', '히스토리아',
+        '라이너', '베르톨트', '파록', '케니', '닐', '마를로'
+    ];
+    const randomNickname = `${emojis[Math.floor(Math.random() * emojis.length)]} ${names[Math.floor(Math.random() * names.length)]}`;
+    document.getElementById('nicknameDisplay').innerText = `당신의 닉네임: ${randomNickname}`;
+
+    // 🔹 URL 파라미터 읽기
+    const urlParams = new URLSearchParams(window.location.search);
+    const roomId = urlParams.get("roomId");
+    const roomName = decodeURIComponent(urlParams.get("roomName") || "💬 채팅방");
+
+    document.getElementById("room").innerText = `현재 방 번호: ${roomId}`;
+    document.getElementById("roomTitle").textContent = roomName;
+
+    // 🎨 랜덤 테마 (roomId 기준)
+    const themes = [
+        {
+            gradient: "linear-gradient(135deg, #d9f7f3, #a7ecec)",
+            main: "#007c77",
+            sub: "#00aaa3",
+            accent: "#22cfc5",
+            text: "#033333"
+        },
+        {
+            gradient: "linear-gradient(135deg, #e0c3fc, #8ec5fc)",
+            main: "#6a4bc4",
+            sub: "#8b6cf0",
+            accent: "#b49ff9",
+            text: "#2d1b5a"
+        },
+        {
+            gradient: "linear-gradient(135deg, #b3e5fc, #81d4fa)",
+            main: "#0277bd",
+            sub: "#039be5",
+            accent: "#29b6f6",
+            text: "#023047"
+        },
+        {
+            gradient: "linear-gradient(135deg, #ffd1dc, #ffe5ec)",
+            main: "#ff5f8f",
+            sub: "#ff85a1",
+            accent: "#ff9eb5",
+            text: "#662244"
+        },
+        {
+            gradient: "linear-gradient(135deg, #1e3c72, #2a5298)",
+            main: "#b3c7ff",
+            sub: "#86a8e7",
+            accent: "#91eae4",
+            text: "#f2f2f2"
+        },
+        {
+            gradient: "linear-gradient(135deg, #c3f0ca, #a2d9ce)",
+            main: "#006d5b",
+            sub: "#00a884",
+            accent: "#55c5b1",
+            text: "#044a3d"
+        }
+    ];
+
+    const themeIndex = parseInt(roomId) % themes.length;
+    const theme = themes[themeIndex];
+
+    const root = document.documentElement;
+    root.style.setProperty('--bg-gradient', theme.gradient);
+    root.style.setProperty('--main-color', theme.main);
+    root.style.setProperty('--sub-color', theme.sub);
+    root.style.setProperty('--accent-color', theme.accent);
+    root.style.setProperty('--text-color', theme.text);
+
+    // 🧠 SockJS + STOMP 연결
+    const socket = new SockJS('/ws');
+    const stomp = Stomp.over(socket);
+
+    stomp.connect({}, () => {
+        console.log('✅ 연결됨');
+        stomp.subscribe(`/topic/room/${roomId}`, (msg) => {
+            const chat = JSON.parse(msg.body);
+            const li = document.createElement('li');
+            li.textContent = `${chat.sender}: ${chat.content}`;
+            document.getElementById('chat').appendChild(li);
+
+            const chatBox = document.getElementById('chat');
+            chatBox.scrollTop = chatBox.scrollHeight;
+        });
+    });
+
+    function sendMessage() {
+        const msg = document.getElementById('message').value.trim();
+        if (!msg) return;
+
+        const chatMessage = {
+            sender: randomNickname,
+            content: msg
+        };
+
+        stomp.send(`/app/send/${roomId}`, {}, JSON.stringify(chatMessage));
+        document.getElementById('message').value = '';
+    }
+
+    // 🔙 버튼 동작
+    function goToList() {
+        window.location.href = "http://localhost:8080/chat/index.html";
+    }
+
+    function goToMain() {
+        window.location.href = "http://localhost:5173/";
+    }
+</script>
+</body>
+</html>

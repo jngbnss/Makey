@@ -1,9 +1,9 @@
 spring:
-  datasource:
-    url: jdbc:h2:tcp://localhost/~/boarddb
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
+#  datasource:
+#    url: jdbc:h2:tcp://localhost/~/boarddb
+#    username: sa
+#    password:
+#    driver-class-name: org.h2.Driver
   jpa:
     hibernate:
       ddl-auto: create
@@ -12,3 +12,15 @@ spring:
         format_sql: true
   logging.level:
     org.hibernate.SQL: debug
+  profiles:
+    include: secret
+
+google:
+  api:
+    key: ${GOOGLE_API_KEY}  # 환경변수에서 읽음
+my:
+  secret-key: ${MY_SECRET_KEY:test-secret}
+server:
+  port: 5000  # 애플리케이션이 5000번 포트에서 실행되도록 설정
+
+

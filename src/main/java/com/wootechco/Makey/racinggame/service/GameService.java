@@ -1,0 +1,61 @@
+package com.wootechco.Makey.racinggame.service;
+import com.wootechco.Makey.racinggame.model.Game;
+import com.wootechco.Makey.racinggame.model.Player;
+import com.wootechco.Makey.racinggame.repository.GameRepository;
+import com.wootechco.Makey.racinggame.repository.PlayerRepository;
+import java.util.List;
+import java.util.Random;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+public class GameService {
+
+    private final GameRepository gameRepository;
+    private final PlayerRepository playerRepository;
+    private final Random random = new Random();
+
+    public GameService(GameRepository gameRepository, PlayerRepository playerRepository) {
+        this.gameRepository = gameRepository;
+        this.playerRepository = playerRepository;
+    }
+
+    @Transactional
+    public Game startGame(int rounds, List<String> playerNames) {
+        Game game = new Game(rounds);
+        Game savedGame = gameRepository.save(game);
+
+        List<Player> players = playerNames.stream()
+                .map(name -> new Player(name, savedGame))
+                .toList();
+
+        playerRepository.saveAll(players);
+        savedGame.addPlayers(players);
+
+        return savedGame;
+    }
+
+    @Transactional
+    public Game playRound(Long gameId) {
+        Game game = gameRepository.findById(gameId)
+                .orElseThrow(() -> new IllegalArgumentException("게임이 존재하지 않습니다"));
+
+        if (game.isFinished()) return game;
+
+        for (Player player : game.getPlayers()) {
+            int dice = random.nextInt(6) + 1;
+            player.setLastDice(dice);
+
+            if (dice >= 4) {  // ✅ 조건 반영
+                player.move();
+            }
+
+            playerRepository.save(player);
+        }
+
+        game.nextRound();
+        gameRepository.save(game);
+
+        return game;
+    }
+}

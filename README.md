@@ -32,6 +32,33 @@ make your day, make your life
 10. 환경/사회
 
 ---
+
+4️⃣ 제출용 README 안내
+# 프로젝트 실행 방법
+
+1. 구글 API 키 발급 후 환경변수 등록
+
+### Windows
+
+
+setx GOOGLE_API_KEY "발급받은_API_KEY"
+
+
+### Mac/Linux
+
+
+export GOOGLE_API_KEY="발급받은_API_KEY"
+
+
+2. 프로젝트 실행
+
+
+./mvnw spring-boot:run
+
+제출자는 이대로 따라하면 API 키를 깃에 올리지 않고 바로 실행 가능.
+
+---
+
 현재 내 능력
 c++알고리즘
 스프링,jpa 강의만 듣고 만들어본적은없음

@@ -8,8 +8,25 @@ git push -u origin main
 git pull origin main
 
 git add .
-git commit -m "fix : WebConfig 연결 주소 오타"
+git commit -m "refactor : aws db설정 yml수정"
 git push
+# 1️⃣ spring-backend 브랜치로 이동
+git checkout spring-backend
+
+# 2️⃣ main 브랜치의 최신 코드 가져오기 (pull & merge)
+git pull
+origin main
+
+# 3️⃣ 코드 수정 후 변경사항 반영
+git add .
+
+# 4️⃣ 커밋 메시지 작성
+git add .
+git commit -m "chore: aws 설정"
+git push origin spring-backend
+
+# 5️⃣ spring-backend 브랜치에 push
+git push origin spring-backend
 
 | 타입            | 의미                    |
 | ------------- | --------------------- |
